@@ -1,0 +1,82 @@
+/* Custom styles for improved UI */
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.featured-card {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.featured-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.post-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0.5rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.card-title {
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+.card a.btn-light {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.card a.btn-light:hover {
+    background-color: #0b5ed7;
+    color: white;
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: 600;
+    color: #ffc107 !important;
+}
+
+.content-tabs .nav-tabs .nav-link {
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+.content-tabs .nav-tabs .nav-link.active {
+    color: #0b5ed7;
+    background-color: #e7f1ff;
+    border-color: #0b5ed7 #0b5ed7 #fff;
+}
+
+.content-tabs .tab-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-body a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.card-body a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 767.98px) {
+    .featured-card, .post-card {
+        margin-bottom: 1rem;
+    }
+}

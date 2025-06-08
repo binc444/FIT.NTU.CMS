@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${notification.title}">Notification Detail</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-4">
+		<h1 th:text="${notification.title}">Notification Title</h1>
+		<div th:utext="${notification.content}">Notification content…</div>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

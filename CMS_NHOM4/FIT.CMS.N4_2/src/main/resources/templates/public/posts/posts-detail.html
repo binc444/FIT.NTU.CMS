@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- Tiêu đề trang sẽ là tiêu đề bài viết -->
+<title th:text="${post.title}">Post Detail</title>
+<!-- Nhúng CSS Bootstrap -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<style>
+/* Ảnh lớn ở phần đầu */
+.detail-header img {
+	object-fit: cover;
+	width: 100%;
+	max-height: 400px;
+}
+/* Tiêu đề bài viết to và đậm */
+.detail-title {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-top: 1rem;
+}
+/* Dòng thông tin ngày và danh mục, tác giả nhỏ hơn */
+.detail-meta {
+	color: #555;
+	font-size: 0.9rem;
+	margin-bottom: 1rem;
+}
+/* Phần nội dung chính */
+.detail-content {
+	line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+	<!-- Chèn header chung (logo, slogan, login/dashboard) -->
+	<div th:replace="fragments/header :: header"></div>
+
+	<!-- Chèn menu động -->
+	<div th:replace="fragments/menu :: menu"></div>
+
+	<main class="container mt-4">
+		<!-- Tiêu đề bài -->
+		<h1 class="detail-title" th:text="${post.title}">Post Title</h1>
+
+		<!-- Dòng thông tin metadata: ngày đăng (và có thể danh mục/tác giả nếu muốn) -->
+		<div class="detail-meta">
+			<!-- Hiển thị ngày đăng -->
+			Ngày đăng: <span
+				th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">
+				2025-06-01 12:00 </span>
+			<!-- Nếu muốn hiển thị thêm danh mục, có thể thêm như sau (nếu post.getCategory()!=null):
+      Danh mục: <span th:text="${post.category.name}">Category Name</span>
+      Tác giả: <span th:text="${post.author.username}">Admin</span>
+      -->
+		</div>
+
+		<!-- Phần ảnh nổi bật (thumbnail) nếu có -->
+		<div class="detail-header mb-4"
+			th:if="${post.imageThumbnailBase64 != null}">
+			<img
+				th:src="'data:image/jpeg;base64,' + ${post.imageThumbnailBase64}"
+				alt="Featured Image">
+		</div>
+
+		<!-- Phần nội dung bài viết -->
+		<div class="detail-content" th:utext="${post.content}">
+			<!-- Nếu post.content chứa html, th:utext sẽ hiển thị đúng như soạn -->
+			<p>Post content…</p>
+		</div>
+	</main>
+
+	<!-- Chèn footer chung -->
+	<div th:replace="fragments/footer :: footer"></div>
+
+	<!-- Nhúng JS Bootstrap -->
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

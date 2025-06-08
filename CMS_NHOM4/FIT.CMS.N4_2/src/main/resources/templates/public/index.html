@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${settings.siteTitle}">Home</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+
+<body>
+
+	<!-- Header fragment (logo + slogan + login/dashboard link) -->
+	<div th:replace="fragments/header :: header"></div>
+
+	<!-- Dynamic main nav from menus table -->
+	<div th:replace="fragments/menu :: menu"></div>
+
+	<!-- ==== Full-Width Events Carousel ==== -->
+	<div th:if="${latestEvents.size() > 0}">
+		<div id="eventsCarousel" class="carousel slide shadow rounded"
+			data-bs-ride="carousel">
+			<!-- Indicators -->
+			<div class="carousel-indicators">
+				<button th:each="e,stat : ${latestEvents}"
+					th:attr="data-bs-target='#eventsCarousel', data-bs-slide-to=${stat.index}"
+					th:classappend="${stat.index == 0} ? 'active' : ''"
+					aria-current="true"
+					th:attrappend="aria-label='Slide ' + ${stat.index + 1}"></button>
+			</div>
+
+			<!-- Slides -->
+			<div class="carousel-inner rounded">
+				<div th:each="e,stat : ${latestEvents}"
+					th:class="'carousel-item' + (${stat.index == 0} ? ' active' : '')">
+					<img th:if="${e.imageThumbnailBase64 != null}"
+						th:src="'data:image/jpeg;base64,' + ${e.imageThumbnailBase64}"
+						class="d-block w-100" style="height: 400px; object-fit: cover;"
+						th:alt="${e.title}">
+					<div
+						class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+						<h5 th:text="${e.title}">Event title</h5>
+						<p th:text="${#temporals.format(e.eventDate, 'yyyy-MM-dd HH:mm')}">Event
+							date</p>
+						<a th:href="@{'/events/' + ${e.id}}" class="btn btn-sm btn-light">Chi
+							tiết</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Controls -->
+			<button class="carousel-control-prev" type="button"
+				data-bs-target="#eventsCarousel" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon"></span> <span
+					class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button"
+				data-bs-target="#eventsCarousel" data-bs-slide="next">
+				<span class="carousel-control-next-icon"></span> <span
+					class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</div>
+
+
+
+
+	<main class="container mt-4">
+		<div class="row mb-5 align-items-stretch">
+			<!-- FEATURED POST -->
+			<!-- Featured Post Column -->
+			<div class="col-md-5"
+				th:if="${latestPosts != null and latestPosts.size() > 0}">
+				<div class="card h-100 featured-card">
+					<!-- Image goes in its own box using card-img-top -->
+					<img class="card-img-top img-fluid"
+						th:if="${latestPosts[0].imageThumbnailBase64}"
+						th:src="'data:image/jpeg;base64,' + ${latestPosts[0].imageThumbnailBase64}"
+						alt="Featured">
+					<!-- Text content in a separate card body -->
+					<div class="card-body">
+						<h3 class="card-title " th:text="${latestPosts[0].title}">Featured
+							Title</h3>
+						<a th:href="@{/posts/{slug}(slug=${latestPosts[0].slug})}"
+							class="btn btn-light btn-sm"> Read more </a>
+					</div>
+				</div>
+			</div>
+
+			<!-- NEXT THREE POSTS using Flexbox -->
+			<div class="col-md-6">
+				<!-- Flex container that divides the available height equally among child cards -->
+				<div class="d-flex flex-column h-100" style="gap: 0.5rem;">
+					<div class="card post-card flex-fill"
+						th:each="p,iter : ${latestPosts}"
+						th:if="${iter.index > 0 and iter.index < 4}">
+						<!-- Row that fills the card height -->
+						<div class="row g-0 h-100">
+							<!-- Left area: Image (4 columns) -->
+							<div class="col-4">
+								<img th:if="${p.imageThumbnailBase64}"
+									th:src="'data:image/jpeg;base64,' + ${p.imageThumbnailBase64}"
+									class="img-fluid h-100" alt="Thumb" style="object-fit: cover;">
+							</div>
+							<!-- Right area: Text (8 columns)-->
+							<div class="col-8 d-flex align-items-center">
+								<div class="card-body p-2 overflow-hidden w-100 "
+									style="white-space: normal; overflow-wrap: break-word;">
+									<a th:href="@{/posts/{slug}(slug=${p.slug})}"
+										th:text="${p.title}" class="card-title small mb-0 d-block">
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</main>
+
+
+	<main class="container mt-4">
+		<!-- Tabbed panels for Pages, Events, Notifications -->
+		<div class="content-tabs mb-5">
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item"><button class="nav-link active"
+						data-bs-toggle="tab" data-bs-target="#tab-pages">Trang</button></li>
+			</ul>
+			<div class="tab-content border p-3">
+				<!-- PAGES -->
+				<div class="tab-pane fade show active" id="tab-pages">
+					<div class="row g-3">
+						<div class="col-md-3" th:each="pg : ${latestPages}">
+							<div class="card h-100">
+								<img th:if="${pg.imageThumbnailBase64!=null}"
+									th:src="'data:image/jpeg;base64,'+${pg.imageThumbnailBase64}"
+									class="card-img-top" alt="Page">
+								<div class="card-body">
+									<a th:href="@{'/pages/' + ${pg.slug}}" th:text="${pg.title}">Page</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</main>
+
+	<div th:replace="fragments/footer :: footer"></div>
+
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

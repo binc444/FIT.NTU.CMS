@@ -1,0 +1,38 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="menu">
+	<nav th:classappend="${currentUri != null and currentUri.startsWith('/admin')} ? 'navbar-admin' : 'navbar-public'" class="navbar navbar-expand-lg shadow-sm bg-primary">
+		<div class="container-fluid">
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#mainNav"
+				aria-controls="mainNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-center" id="mainNav">
+				<ul class="navbar-nav mb-2 mb-lg-0">
+					<!-- Lặp qua biến "menus" (đã được nạp bởi GlobalControllerAdvice hoặc riêng PublicController) -->
+					<li class="nav-item" th:each="m : ${menus}">
+						<!-- Nếu m.url bắt đầu "http" (external link), ta để target="_blank" hoặc tương tự -->
+						<a class="nav-link"
+						th:href="${m.url.startsWith('http') ? m.url : m.url}"
+						th:attr="target=${m.url.startsWith('http') ? '_blank' : '_self'}"
+						th:classappend="${currentUri != null and currentUri.equals(m.url)} ? ' active' : ''">
+							<span th:switch="${m.title}">
+								<span th:case="'Home'"><i class="bi bi-house-door-fill"></i> Trang chủ</span>
+								<span th:case="'Posts'"><i class="bi bi-file-text-fill"></i> Bài viết</span>
+								<span th:case="'Pages'"><i class="bi bi-file-earmark-fill"></i> Trang</span>
+								<span th:case="'Events'"><i class="bi bi-calendar-event-fill"></i> Sự kiện</span>
+								<span th:case="'Notifications'"><i class="bi bi-bell-fill"></i> Thông báo</span>
+								<span th:case="*"><i class="bi bi-link-45deg"></i> <span th:text="${m.title}">Menu</span></span>
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>
+</html>

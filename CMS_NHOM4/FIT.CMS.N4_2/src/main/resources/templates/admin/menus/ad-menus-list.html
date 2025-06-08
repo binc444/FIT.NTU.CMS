@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý Menu</title>
+<!-- Kết nối tới file CSS Bootstrap, nếu có -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<!-- Chèn header (logo, slogan, login/dashboard) -->
+	<div th:replace="fragments/header :: header"></div>
+	<!-- Chèn menu chính (dynamic) -->
+	<div th:replace="fragments/menu :: menu"></div>
+	
+
+	<main class="container mt-4">
+		<h2>Danh sách Menu (Admin)</h2>
+		<a th:href="@{/admin/menus/create}" class="btn btn-success mb-3">Tạo
+			Menu Mới</a>
+
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Tiêu đề</th>
+					<th>URL</th>
+					<th>Loại nội dung (contentType)</th>
+					<th>ID Nội dung (contentId)</th>
+					<th>Thứ tự (sortOrder)</th>
+					<th>Thao tác</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Lặp qua biến "menus" trong model -->
+				<tr th:each="m : ${menus}">
+					<td th:text="${m.id}">1</td>
+					<td th:text="${m.title}">Home</td>
+					<td th:text="${m.url}">/</td>
+					<td th:text="${m.contentType}">PAGE</td>
+					<td th:text="${m.contentId}">1</td>
+					<td th:text="${m.sortOrder}">1</td>
+					<td>
+						<!-- Nút sửa --> <a th:href="@{'/admin/menus/edit/' + ${m.id}}"
+						class="btn btn-primary btn-sm">Sửa</a> <!-- Nút xóa --> <a
+						th:href="@{'/admin/menus/delete/' + ${m.id}}"
+						class="btn btn-danger btn-sm"
+						onclick="return confirm('Bạn có chắc chắn xóa menu này?');">Xóa</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<!-- Chèn footer (dynamic) -->
+	<div th:replace="fragments/footer :: footer"></div>
+	<!-- Kết nối JS Bootstrap nếu cần -->
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Pages</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-4">
+		<h2>All Pages</h2>
+		<a th:href="@{/admin/pages/create}" class="btn btn-success mb-3">New
+			Page</a>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Slug</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p: ${pages.content}">
+					<td th:text="${p.title}"></td>
+					<td th:text="${p.slug}"></td>
+					<td><a th:href="@{'/admin/pages/edit/' + ${p.id}}"
+						class="btn btn-sm btn-primary">Edit</a> <a
+						th:href="@{'/admin/pages/delete/' + ${p.id}}"
+						class="btn btn-sm btn-danger" onclick="return confirm('Delete?');">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

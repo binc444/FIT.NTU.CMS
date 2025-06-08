@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${event.title}">Event Detail</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-4">
+		<h1 th:text="${event.title}">Event Title</h1>
+		<p>
+			<em
+				th:text="${#temporals.format(event.eventDate,'yyyy-MM-dd HH:mm')}"></em>
+		</p>
+		<div th:utext="${event.description}">Event details…</div>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

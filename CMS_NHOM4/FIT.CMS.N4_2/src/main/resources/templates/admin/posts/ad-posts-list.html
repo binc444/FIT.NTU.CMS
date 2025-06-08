@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Posts List</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+
+	<main class="container mt-4">
+		<h2>All Posts</h2>
+		<a th:href="@{/admin/posts/create}" class="btn btn-success mb-3">New
+			Post</a>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Slug</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${posts.content}">
+					<td th:text="${p.title}"></td>
+					<td th:text="${p.slug}"></td>
+					<td><a th:href="@{'/admin/posts/edit/' + ${p.id}}"
+						class="btn btn-sm btn-primary">Edit</a> <a
+						th:href="@{'/admin/posts/delete/' + ${p.id}}"
+						class="btn btn-sm btn-danger" onclick="return confirm('Delete?');">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- pagination omitted for brevity -->
+	</main>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

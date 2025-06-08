@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${item.title}">Post</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div th:replace="fragments/menu :: menu"></div>
+
+	<main class="container mt-4">
+		<h1 th:text="${item.title}">Post Title</h1>
+		<div th:utext="${item.content}">Content here</div>
+	</main>
+
+	<div th:replace="fragments/footer :: footer"></div>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

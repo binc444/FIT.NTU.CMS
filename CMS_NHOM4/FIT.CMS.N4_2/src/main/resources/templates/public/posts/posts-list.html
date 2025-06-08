@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- Tiêu đề trang -->
+<title>All Posts</title>
+<!-- Nhúng CSS của Bootstrap -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<style>
+/* Để làm thumbnail không bị méo */
+.post-card img {
+	object-fit: cover;
+	height: 180px;
+	width: 100%;
+}
+/* Khoảng cách giữa các thẻ card */
+.post-card {
+	margin-bottom: 1.5rem;
+}
+/* Làm tiêu đề hơi đậm */
+.post-title {
+	font-size: 1.1rem;
+	font-weight: 600;
+}
+/* Dòng ngày đăng nhỏ hơn và mờ nhẹ */
+.post-date {
+	font-size: 0.9rem;
+	color: #666;
+}
+</style>
+</head>
+<body>
+
+	<!-- Chèn header (logo, slogan, login/dashboard link) -->
+	<div th:replace="fragments/header :: header"></div>
+
+	<!-- Chèn menu động từ bảng menus -->
+	<div th:replace="fragments/menu :: menu"></div>
+
+	<main class="container mt-4">
+		<h1 class="mb-4">Tất cả bài viết</h1>
+
+		<!-- Bắt đầu lưới: mỗi hàng có 3 cột (col-md-4) -->
+		<div class="row">
+			<!-- Vòng lặp qua tất cả posts trong model -->
+			<div class="col-md-4" th:each="p : ${posts}">
+				<!-- Mỗi bài viết là một card -->
+				<div class="card post-card">
+					<!-- Thẻ để chứa hình thumbnail -->
+					<div th:if="${p.imageThumbnailBase64 != null}" class="card-img-top">
+						<img
+							th:src="'data:image/jpeg;base64,' + ${p.imageThumbnailBase64}"
+							alt="Thumbnail" class="img-fluid">
+					</div>
+					<!-- Nếu không có hình thì hiển thị hình mặc định -->
+					<div th:if="${p.imageThumbnailBase64 == null}" class="card-img-top"
+						style="height: 180px; background: #ddd; display: flex; align-items: center; justify-content: center;">
+						<span style="color: #888;">No Image</span>
+					</div>
+					<div class="card-body">
+						<!-- Tiêu đề bài viết, bấm vào sẽ tới trang chi tiết -->
+						<a th:href="@{/posts/{slug}(slug=${p.slug})}"
+							class="text-dark post-title d-block mb-2" th:text="${p.title}">Post
+							Title</a>
+						<!-- Dòng ngày đăng, lấy từ createdAt -->
+						<div class="post-date"
+							th:text="${#temporals.format(p.createdAt, 'yyyy-MM-dd HH:mm')}">
+							2025-06-01 12:00</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /row -->
+
+	</main>
+
+	<!-- Chèn footer (contact, mạng xã hội…) -->
+	<div th:replace="fragments/footer :: footer"></div>
+
+	<!-- Nhúng JS của Bootstrap -->
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

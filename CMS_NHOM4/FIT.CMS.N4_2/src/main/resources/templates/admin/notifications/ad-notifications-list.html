@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Notifications</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-4">
+		<h2>All Notifications</h2>
+		<a th:href="@{/admin/notifications/create}"
+			class="btn btn-success mb-3">New Notification</a>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="n : ${notifs.content}">
+					<td th:text="${n.title}"></td>
+					<td><a th:href="@{'/admin/notifications/edit/' + ${n.id}}"
+						class="btn btn-sm btn-primary">Edit</a> <a
+						th:href="@{'/admin/notifications/delete/' + ${n.id}}"
+						class="btn btn-sm btn-danger"
+						onclick="return confirm('Delete this notification?');">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

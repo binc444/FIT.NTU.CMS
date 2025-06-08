@@ -1,0 +1,31 @@
+<!-- templates/fragments/header.html -->
+<div th:fragment="header">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <img th:if="${settings.logoBase64 != null}" th:src="'data:image/png;base64,' + ${settings.logoBase64}" alt="Logo" style="height: 40px; width: auto;"/>
+                    <span th:if="${settings.logoBase64 == null}" th:text="${settings.siteTitle}" class="ms-2 h4 mb-0">Site Title</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarHeader">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="navbar-text fst-italic" th:text="${settings.slogan}">Your slogan</span>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item" th:if="${#authentication.name == 'anonymousUser'}">
+                            <a class="btn btn-outline-primary me-2" th:href="@{/login}">Login</a>
+                        </li>
+                        <li class="nav-item" th:if="${#authentication.name != 'anonymousUser'}">
+                            <a class="btn btn-primary" th:href="@{/admin/index}">Dashboard</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</div>

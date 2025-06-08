@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${event.id} != null ? 'Edit Event' : 'New Event'">Event
+	Form</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-4">
+		<h1 th:text="${event.id} != null ? 'Edit Event' : 'Create New Event'"></h1>
+		<form th:action="@{/admin/events/save}" th:object="${event}"
+			method="post" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}" />
+			<div class="mb-3">
+				<label class="form-label">Title</label> <input class="form-control"
+					th:field="*{title}" required />
+			</div>
+			<div class="mb-3">
+				<label class="form-label">Event Date</label> <input
+					class="form-control" th:field="*{eventDate}" id="eventDate"
+					placeholder="YYYY-MM-DD HH:mm" readonly />
+			</div>
+			<div class="mb-3">
+				<label class="form-label">Description</label>
+				<textarea class="form-control" rows="6" th:field="*{description}"></textarea>
+			</div>
+			<div class="mb-3" th:if="${event.imageThumbnail != null}">
+				<label class="form-label">Current Thumbnail</label><br /> <img
+					th:src="'data:image/jpeg;base64,' + ${event.imageThumbnailBase64}"
+					class="img-thumbnail" style="max-width: 200px;" />
+			</div>
+			<div class="mb-3">
+				<label class="form-label">Replace Thumbnail</label> <input
+					type="file" name="file" class="form-control" />
+			</div>
+			<button class="btn btn-primary" type="submit">Save</button>
+			<a th:href="@{/admin/events}" class="btn btn-secondary">Cancel</a>
+		</form>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+	<script th:src="@{/js/flatpickr/flatpickr.min.js}"></script>
+	<script>
+		flatpickr("#eventDate", {
+			enableTime : true,
+			dateFormat : "Y-m-d H:i",
+			time_24hr : true,
+			defaultDate : document.querySelector("#eventDate").value
+					|| new Date(),
+			allowInput : false
+		});
+	</script>
+</body>
+</html>

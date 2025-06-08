@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title
+	th:text="${notif.id} != null ? 'Edit Notification' : 'New Notification'">Notification
+	Form</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-4">
+		<h1
+			th:text="${notif.id} != null ? 'Edit Notification' : 'Create New Notification'"></h1>
+		<form th:action="@{/admin/notifications/save}" th:object="${notif}"
+			method="post" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}" />
+
+			<div class="mb-3">
+				<label class="form-label">Title</label> <input class="form-control"
+					th:field="*{title}" required />
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Content</label>
+				<textarea class="form-control" rows="6" th:field="*{content}"></textarea>
+			</div>
+
+			<div class="mb-3" th:if="${notif.imageThumbnail != null}">
+				<label class="form-label">Current Thumbnail</label><br /> <img
+					th:src="'data:image/jpeg;base64,' + ${notif.imageThumbnailBase64}"
+					class="img-thumbnail" style="max-width: 200px;" />
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Replace Thumbnail</label> <input
+					type="file" name="file" class="form-control" />
+			</div>
+
+			<button class="btn btn-primary" type="submit">Save</button>
+			<a th:href="@{/admin/notifications}" class="btn btn-secondary">Cancel</a>
+		</form>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

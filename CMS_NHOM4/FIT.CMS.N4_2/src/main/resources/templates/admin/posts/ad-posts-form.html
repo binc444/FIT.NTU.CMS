@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${post.id} != null ? 'Edit Post' : 'New Post'">Post
+	Form</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+<script>
+	tinymce.init({
+		selector : '#content',
+		menubar : false
+	});
+</script>
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<div class="container mt-4">
+		<h1 th:text="${post.id} != null ? 'Edit Post' : 'Create New Post'"></h1>
+		<form th:action="@{/admin/posts/save}" th:object="${post}"
+			method="post" enctype="multipart/form-data">
+
+			<!-- ensure ID is carried for updates -->
+			<input type="hidden" th:field="*{id}" />
+
+			<div class="mb-3">
+				<label for="title" class="form-label">Title</label> <input
+					id="title" type="text" class="form-control" th:field="*{title}"
+					required>
+			</div>
+
+			<div class="mb-3">
+				<label for="slug" class="form-label">Slug</label> <input id="slug"
+					type="text" class="form-control" th:field="*{slug}" required>
+			</div>
+
+			<div class="mb-3">
+				<label for="category" class="form-label">Category</label> <select
+					id="category" class="form-select" th:field="*{category.id}">
+					<option th:each="c : ${categories}" th:value="${c.id}"
+						th:text="${c.name}">Category</option>
+				</select>
+			</div>
+
+			<div class="mb-3">
+				<label for="status" class="form-label">Status</label> <select
+					id="status" class="form-select" th:field="*{status.id}">
+					<option th:each="s : ${statuses}" th:value="${s.id}"
+						th:text="${s.name}">Status</option>
+				</select>
+			</div>
+
+			<!-- preview via your transient getter -->
+			<div class="mb-3" th:if="${post.imageThumbnail != null}">
+				<label class="form-label">Current Thumbnail</label><br> <img
+					th:src="'data:image/jpeg;base64,' + ${post.imageThumbnailBase64}"
+					class="img-thumbnail" style="max-width: 200px;">
+			</div>
+
+			<div class="mb-3">
+				<label for="file" class="form-label">Replace Thumbnail</label> <input
+					id="file" name="file" type="file" class="form-control">
+			</div>
+
+			<div class="mb-3">
+				<label for="content" class="form-label">Content</label>
+				<textarea id="content" class="form-control" rows="10"
+					th:field="*{content}"></textarea>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Save</button>
+			<a th:href="@{/admin/posts}" class="btn btn-secondary">Cancel</a>
+		</form>
+	</div>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

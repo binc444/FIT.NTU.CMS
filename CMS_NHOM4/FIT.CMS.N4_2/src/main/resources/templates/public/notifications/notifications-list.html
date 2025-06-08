@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Các thông báo</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:replace="~{fragments/menu :: menu}"></div>
+	<main class="container mt-5">
+		<h1 class="mb-4 fw-bold text-primary">Các thông báo</h1>
+		<div class="row g-3">
+			<div class="col-md-4" th:each="n : ${notifications}">
+				<div class="card shadow-sm rounded-3 h-100">
+					<div th:if="${n.imageThumbnailBase64 != null}" class="card-img-top rounded-top overflow-hidden" style="height: 180px;">
+						<img th:src="'data:image/jpeg;base64,' + ${n.imageThumbnailBase64}" alt="Notification Image" class="img-fluid h-100" style="object-fit: cover;">
+					</div>
+					<div th:if="${n.imageThumbnailBase64 == null}" class="card-img-top rounded-top d-flex align-items-center justify-content-center" style="height: 180px; background: #ddd;">
+						<span style="color: #888;">No Image</span>
+					</div>
+					<div class="card-body d-flex flex-column justify-content-between">
+						<h5 class="card-title fw-semibold" th:text="${n.title}">Notification</h5>
+						<a th:href="@{/notifications/{id}(id=${n.id})}" class="btn btn-primary btn-sm fw-semibold mt-auto align-self-start " style="color: #fff;">chi tiết</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

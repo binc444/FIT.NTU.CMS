@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title
+	th:text="${menu.id != null} ? 'Sửa Menu (ID: '+${menu.id}+ ')' : 'Tạo Menu Mới'">Menu
+	Form</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div th:replace="fragments/menu :: menu"></div>
+	
+
+	<main class="container mt-4">
+		<h2
+			th:text="${menu.id != null} ? 'Sửa Menu (ID: '+${menu.id}+ ')' : 'Tạo Menu Mới'"></h2>
+
+		<form th:action="@{/admin/menus/save}" th:object="${menu}"
+			method="post">
+			<input type="hidden" th:field="*{id}" />
+
+			<div class="mb-3">
+				<label class="form-label">Tiêu đề (title)</label> <input type="text"
+					class="form-control" th:field="*{title}" required />
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Loại nội dung (contentType)</label> <select
+					class="form-select" th:field="*{contentType}">
+					<option th:each="ct : ${contentTypes}" th:value="${ct}"
+						th:text="${ct}">TYPE</option>
+				</select>
+			</div>
+
+			<!-- PAGE -->
+			<div class="mb-3" th:if="${menu.contentType == 'PAGE'}">
+				<label class="form-label">Chọn Page (contentId)</label> <select
+					class="form-select" th:field="*{contentId}">
+					<option value="" th:text="'-- Để trống (dẫn tới /pages) --'"></option>
+					<option th:each="pg : ${allPages}" th:value="${pg.id}"
+						th:text="${pg.title}">Page Title</option>
+				</select>
+				<div class="form-text text-muted">Để trống để dẫn tới danh
+					sách tất cả trang.</div>
+			</div>
+
+			<!-- POST -->
+			<div class="mb-3" th:if="${menu.contentType == 'POST'}">
+				<label class="form-label">Chọn Post (contentId)</label> <select
+					class="form-select" th:field="*{contentId}">
+					<option value="" th:text="'-- Để trống (dẫn tới /posts) --'"></option>
+					<option th:each="p : ${allPosts}" th:value="${p.id}"
+						th:text="${p.title}">Post Title</option>
+				</select>
+				<div class="form-text text-muted">Để trống để dẫn tới danh
+					sách tất cả bài viết.</div>
+			</div>
+
+			<!-- EVENT -->
+			<div class="mb-3" th:if="${menu.contentType == 'EVENT'}">
+				<label class="form-label">Chọn Event (contentId)</label> <select
+					class="form-select" th:field="*{contentId}">
+					<option value="" th:text="'-- Để trống (dẫn tới /events) --'"></option>
+					<option th:each="e : ${allEvents}" th:value="${e.id}"
+						th:text="${e.title}">Event Title</option>
+				</select>
+				<div class="form-text text-muted">Để trống để dẫn tới danh
+					sách tất cả sự kiện.</div>
+			</div>
+
+			<!-- NOTIF -->
+			<div class="mb-3" th:if="${menu.contentType == 'NOTIF'}">
+				<label class="form-label">Chọn Notification (contentId)</label> <select
+					class="form-select" th:field="*{contentId}">
+					<option value=""
+						th:text="'-- Để trống (dẫn tới /notifications) --'"></option>
+					<option th:each="n : ${allNotifs}" th:value="${n.id}"
+						th:text="${n.title}">Notif Title</option>
+				</select>
+				<div class="form-text text-muted">Để trống để dẫn tới danh
+					sách tất cả thông báo.</div>
+			</div>
+
+			<!-- CUSTOM URL -->
+			<div class="mb-3" th:if="${menu.contentType == 'CUSTOM'}">
+				<label class="form-label"> URL Tùy ý <small
+					class="text-muted">(Chỉ khi chọn Content Type = CUSTOM)</small>
+				</label> <input  type="text" class="form-control" th:field="*{url}"
+					placeholder="/admissions hoặc https://..." />
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Thứ tự (sortOrder)</label> <input
+					type="number" class="form-control" th:field="*{sortOrder}"
+					value="0" required />
+			</div>
+
+			<button type="submit" class="btn btn-primary">Lưu</button>
+			<a th:href="@{/admin/menus}" class="btn btn-secondary">Hủy</a>
+		</form>
+	</main>
+
+	<div th:replace="fragments/footer :: footer"></div>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
